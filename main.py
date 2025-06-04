@@ -1,3 +1,5 @@
+# Trigger rebuild for Streamlit Cloud
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta, time
