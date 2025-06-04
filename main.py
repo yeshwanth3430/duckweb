@@ -23,6 +23,21 @@ from analysis import show_analysis_page
 from technical_indicator.backtesting import (
     backtest_ema, backtest_sma, backtest_supertrend, backtest_macd, backtest_ema_with_trades, backtest_single_ema_with_trades, backtest_supertrend_with_trades, backtest_supertrend_rr_with_trades, backtest_ema_rr_with_trades, backtest_macd_rr_with_trades
 )
+import os
+import requests
+
+DROPBOX_URL = "https://www.dropbox.com/scl/fi/g3kuv2uo0h7s6viyd6rb4/DAILY_ALL_INDEX.duckdb?rlkey=d3ikvukhdxnwvy68k3wxgm6bz&st=9sgcmsqo&dl=1"
+LOCAL_DB_PATH = "DAILY_ALL_INDEX.duckdb"
+
+def download_db_if_needed():
+    if not os.path.exists(LOCAL_DB_PATH):
+        print("Downloading database from Dropbox...")
+        r = requests.get(DROPBOX_URL)
+        with open(LOCAL_DB_PATH, "wb") as f:
+            f.write(r.content)
+        print("Download complete.")
+
+download_db_if_needed()
 
 def backtest_bollinger_bands(df, period=20, std_dev=2.0, bb_middle_col=None, bb_upper_col=None, bb_lower_col=None):
     # Simple BBands backtest: Buy when close crosses above lower band, sell when close crosses below upper band
